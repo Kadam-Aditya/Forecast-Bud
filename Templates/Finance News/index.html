@@ -51,6 +51,14 @@
       </div>
     {% endfor %}
   </div>
+
+  {% if has_error %}
+        <div>
+            <p>There was an issue fetching the news. Please try again later.</p>
+            <!-- Display the "Buy Subscription Plan" button -->
+            <button onclick="location.href='/subscription/'">Buy Subscription Plan</button>
+        </div>
+    {% else %}
   
 </div>
 
