@@ -52,12 +52,12 @@
                 </form>
 
                 <!-- Edit Button -->
-                <a href="{% url 'edit_budget' budget.id %}" class="btn btn-warning btn-sm mb-2 modern-btn">Edit</a>
+                <a href="{% url 'edit_budget' budget.id %}" class="btn btn-primary btn-sm mb-2 modern-btn">Edit</a>
 
                 <!-- Delete Button -->
                 <form method="post" action="{% url 'delete_budget' budget.id %}" class="d-inline">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-danger btn-sm mb-2 modern-btn">Delete</button>
+                  <button type="submit" class="btn btn-primary2 btn-sm mb-2 modern-btn">Delete</button>
                 </form>
               </div>
             </div>
@@ -107,31 +107,20 @@
   }
 
   .btn-primary {
-    background: #007bff;
+    background: #3498db;
     border: none;
   }
 
-  .btn-primary:hover {
-    background: #0056b3;
-  }
-
-  .btn-warning {
-    background: #007bff;
+  .btn-primary2 {
+    background: #02263d;
+    color: white;
     border: none;
   }
 
-  .btn-warning:hover {
-    background: #0056b3;
+  .btn-primary2:hover {
+    color: white;
   }
 
-  .btn-danger {
-    background: rgb(2, 11, 69);
-    border: none;
-  }
-
-  .btn-danger:hover {
-    background: #b52b35;
-  }
 
   /* Card title */
   .card-title {
