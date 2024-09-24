@@ -1,18 +1,32 @@
 from django.shortcuts import render
-from newsapi import NewsApiClient
+from newsapi import NewsApiClient, NewsAPIException
 from decouple import config
+import requests
 
 def index(request):
     # Set the default news source
-    default_news_source = 'Fortune'  # You can change this to any valid source
+    default_news_source = 'bbc-news'  # You can change this to any valid source
 
     # Get the news source from the request or use the default
     news_source = request.GET.get('news-source', default_news_source)
 
     newsapi = NewsApiClient(api_key=config("NEWS_API_KEY"))
-    
-    # Fetch news based on the selected source
-    top = newsapi.get_top_headlines(sources=news_source)
+
+    try:
+        # Fetch news with a specified timeout (in seconds)
+        top = newsapi.get_top_headlines(sources=news_source, timeout=15)
+    except NewsAPIException as e:
+        # Handle News API specific exceptions
+        top = {}
+        print(f"News API error: {e}")
+    except requests.exceptions.Timeout:
+        # Handle timeout error specifically
+        top = {}
+        print("Request timed out. Please try again later.")
+    except requests.exceptions.RequestException as e:
+        # Handle other network-related errors
+        top = {}
+        print(f"Request error: {e}")
 
     my_articles = top.get('articles', [])
     
@@ -28,17 +42,15 @@ def index(request):
         news.append(f['title'])
         
         # Check if the description is not None before splitting
-        description = f['description']
+        description = f.get('description', '')
         if description:
             # Split the description into words and take the first max_words_in_description words
             description_words = description.split()[:max_words_in_description]
             description = ' '.join(description_words)
-        else:
-            description = ''  # Set an empty string if description is None
         
         desc.append(description)
         
-        img.append(f['urlToImage'])
+        img.append(f.get('urlToImage', ''))
 
     mylist = zip(news, desc, img)
 
