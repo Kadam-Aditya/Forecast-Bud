@@ -8,6 +8,7 @@ def index(request):
 
     try:
         top = newsapi.get_top_headlines(sources='bbc-news')
+        print(top)
     except requests.exceptions.RequestException as e:
         # Handle all kinds of request exceptions here
         print(f"Request error: {e}")
