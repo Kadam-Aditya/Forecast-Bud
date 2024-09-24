@@ -3,16 +3,16 @@ from newsapi import NewsApiClient
 from decouple import config
 
 def index(request):
-    # Default news source is an empty string if not specified
-    news_source = request.GET.get('news-source', "")
+    # Set the default news source
+    default_news_source = 'Fortune'  # You can change this to any valid source
+
+    # Get the news source from the request or use the default
+    news_source = request.GET.get('news-source', default_news_source)
 
     newsapi = NewsApiClient(api_key=config("NEWS_API_KEY"))
     
-    # Fetch news based on the selected source or from the business category
-    if news_source:
-        top = newsapi.get_top_headlines(sources=news_source)
-    else:
-        top = newsapi.get_top_headlines(category='business')
+    # Fetch news based on the selected source
+    top = newsapi.get_top_headlines(sources=news_source)
 
     my_articles = top.get('articles', [])
     
