@@ -299,8 +299,8 @@ def edit_budget(request, budget_id):
 
 def generate_budget_plan(user_expenses):
     
-    models_path = Path('ARIMA_Model/models_dict.pkl')
-    params_path = Path('ARIMA_Model/best_params_dict.pkl')
+    models_path = Path('E:/My Projects/MAIN PROJECTS/Forecast-Bud/ARIMA_Model/models_dict.pkl')
+    params_path = Path('E:/My Projects/MAIN PROJECTS/Forecast-Bud/ARIMA_Model/best_params_dict.pkl')
     
     # Load models and params only when function is called
     models_dict = joblib.load(models_path)
