@@ -47,9 +47,9 @@
 {% if has_error %}
   <div class="error-overlay">
     <div class="error-message text-center">
-      <button class="close-button" onclick="location.href='/budget/'">&times;</button>
+      <button class="close-button" onclick="location.href='{% url 'Budget Planner' %}'">&times;</button>
       <p>To access this function subscribe to premium plan.</p>
-      <button onclick="location.href='/subscription/'" class="btn btn-primary">Buy Subscription</button>
+      <button onclick="location.href='#'" class="btn btn-primary">Buy Subscription</button>
     </div>
   </div>
 {% endif %}
@@ -132,12 +132,12 @@
   /* Close button style */
   .close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 20px;
     border: none;
     background: transparent;
     font-size: 1.5rem;
-    color: d6d8d4; /* Change color to red for visibility */
+    color: 636464; /* Change color to red for visibility */
     cursor: pointer;
     padding: 0; /* Remove padding for a clean look */
     line-height: 1; /* Align text vertically */
