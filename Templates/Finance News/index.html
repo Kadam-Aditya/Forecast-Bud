@@ -2,9 +2,10 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4 {% if has_error %}blur-background{% endif %}">
+<div class="container mt-4">
   <div class="row mb-4">
-    <div class="col-md-10">
+    <!-- Sidebar (Unblurred) -->
+    <div class="col-md-2">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
@@ -16,40 +17,43 @@
         </ol>
       </nav>
     </div>
-  </div>
 
-  <div class="row mb-3">
-    <div class="col-md-12">
-      <form method="get" action="{% url 'Finance News' %}">
-        <div class="form-group">
-          <label for="news-source">Select News Source:</label>
-          <select id="news-source" name="news-source" class="form-control" onchange="this.form.submit()">
-            <option value="" {% if selected_source == '' %}selected{% endif %}>Select</option>
-            <option value="associated-press" {% if selected_source == 'associated-press' %}selected{% endif %}>Associated Press</option>
-            <option value="bbc-news" {% if selected_source == 'bbc-news' %}selected{% endif %}>BBC News</option>
-            <option value="bloomberg" {% if selected_source == 'bloomberg' %}selected{% endif %}>Bloomberg</option>
-            <option value="business-insider" {% if selected_source == 'business-insider' %}selected{% endif %}>Business Insider</option>
-            <option value="crypto-coins-news" {% if selected_source == 'crypto-coins-news' %}selected{% endif %}>Crypto Coins News</option>
-            <option value="fox-news" {% if selected_source == 'fox-news' %}selected{% endif %}>Fox News</option>
-            <option value="fortune" {% if selected_source == 'fortune' %}selected{% endif %}>Fortune</option>
-          </select>
+    <!-- Main content (Blurrable) -->
+    <div class="col-md-10 {% if has_error %}blur-background{% endif %}">
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <form method="get" action="{% url 'Finance News' %}">
+            <div class="form-group">
+              <label for="news-source">Select News Source:</label>
+              <select id="news-source" name="news-source" class="form-control" onchange="this.form.submit()">
+                <option value="" {% if selected_source == '' %}selected{% endif %}>Select</option>
+                <option value="associated-press" {% if selected_source == 'associated-press' %}selected{% endif %}>Associated Press</option>
+                <option value="bbc-news" {% if selected_source == 'bbc-news' %}selected{% endif %}>BBC News</option>
+                <option value="bloomberg" {% if selected_source == 'bloomberg' %}selected{% endif %}>Bloomberg</option>
+                <option value="business-insider" {% if selected_source == 'business-insider' %}selected{% endif %}>Business Insider</option>
+                <option value="crypto-coins-news" {% if selected_source == 'crypto-coins-news' %}selected{% endif %}>Crypto Coins News</option>
+                <option value="fox-news" {% if selected_source == 'fox-news' %}selected{% endif %}>Fox News</option>
+                <option value="fortune" {% if selected_source == 'fortune' %}selected{% endif %}>Fortune</option>
+              </select>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-  </div>
-
-  <h1 class="mt-4 text-center" style="font-weight: bold;">HEADLINES</h1>
-
-  <div class="news-container mt-3">
-    {% for news, des, image in mylist %}
-      <div class="news-item mb-4 p-4 border rounded shadow-sm">
-        <h2 class="news-title">{{ news|upper|linebreaks }}</h2>
-        <img src="{{ image }}" alt="{{ news }}" class="img-fluid rounded mb-3">
-        <h4 class="mt-3">Description:</h4>
-        <p class="news-description">{{ des|linebreaks }}</p>
-        <a href="https://www.bbc.com/news/business" class="btn btn-link">Read more</a>
       </div>
-    {% endfor %}
+
+      <h1 class="mt-4 text-center" style="font-weight: bold;">HEADLINES</h1>
+
+      <div class="news-container mt-3">
+        {% for news, des, image in mylist %}
+          <div class="news-item mb-4 p-4 border rounded shadow-sm">
+            <h2 class="news-title">{{ news|upper|linebreaks }}</h2>
+            <img src="{{ image }}" alt="{{ news }}" class="img-fluid rounded mb-3">
+            <h4 class="mt-3">Description:</h4>
+            <p class="news-description">{{ des|linebreaks }}</p>
+            <a href="https://www.bbc.com/news/business" class="btn btn-link">Read more</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -74,7 +78,7 @@
     margin-bottom: 1rem;
     margin-top: 7px;
     border-radius: 0.25rem;
-    width: 1108px; 
+    width: 100%;
     border: 1px solid #ccc;
   }
 
@@ -108,7 +112,7 @@
     transform: translateY(-5px);
   }
 
-  /* CSS for blurring the background */
+  /* CSS for blurring only the main content */
   .blur-background {
     filter: blur(5px);
     pointer-events: none; /* Prevent interaction with the blurred content */
