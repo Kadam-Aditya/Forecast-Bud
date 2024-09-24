@@ -7,7 +7,7 @@ def index(request):
     newsapi = NewsApiClient(api_key=config("NEWS_API_KEY"))
 
     try:
-        top = newsapi.get_top_headlines(sources='bbc-news', timeout=5)
+        top = newsapi.get_top_headlines(sources='bbc-news')
     except requests.exceptions.RequestException as e:
         # Handle all kinds of request exceptions here
         print(f"Request error: {e}")
