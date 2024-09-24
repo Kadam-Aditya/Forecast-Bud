@@ -57,9 +57,9 @@
 {% if has_error %}
   <div class="error-overlay">
     <div class="error-message text-center">
-      <button class="close-button" onclick="location.href='{% url 'Budget Planner' %}'">&times;</button>
+      <button class="close-button" onclick="location.href='{% url 'Budget Planner' %}'">Close</button>
       <p>There was an issue fetching the news. Please try again later.</p>
-      <button onclick="location.href='/subscription/'" class="btn btn-primary">Buy Subscription Plan</button>
+      <button onclick="location.href='#'" class="btn btn-primary">Buy Subscription Plan</button>
     </div>
   </div>
 {% endif %}
