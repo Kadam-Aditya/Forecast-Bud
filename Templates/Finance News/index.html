@@ -28,6 +28,10 @@
 
       <h1 class="mt-4 text-center" style="font-weight: bold;">HEADLINES</h1>
 
+      <div class="banner-container text-center mt-4">
+        <img src="{% static 'Main/static/img/FN_IMG.jpg' %}" alt="Banner Image" class="img-fluid banner-image">
+      </div>
+
       <div class="news-container mt-3">
         {% for news, des, image in mylist %}
           <div class="news-item mb-4 p-4 border rounded shadow-sm">
@@ -132,8 +136,8 @@
   /* Close button style */
   .close-button {
     position: absolute;
-    top: 5px;
-    right: 15px;
+    top: 6px;
+    right: 16px;
     border: none;
     background: transparent;
     font-size: 1.5rem;
