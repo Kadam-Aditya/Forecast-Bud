@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'Budget Planner'%}">Budget Planner</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'budget'%}">Manual budget</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'Saved Budgets'%}">Saved budget</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Edit Budget
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>  
+
+
+
+  <div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h1 class="card-title text-center mb-4">Edit Budget: {{ budget.budget_title }}</h1>
+          
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="id_budget_title">Budget Title</label>
+                <input type="text" name="budget_title" id="id_budget_title" 
+                  class="form-control" 
+                  value="{{ form.budget_title.value|default:budget.budget_title }}" required>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="id_total_budget">Total Budget</label>
+                <input type="number" name="total_budget" id="id_total_budget" 
+                  class="form-control" 
+                  value="{{ form.total_budget.value|default:budget.total_budget }}" required>
+              </div>
+            </div>
+
+            <h3 class="mt-4">Edit Allotted Budgets for Categories</h3>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="id_education_budget">Education Budget</label>
+                <input type="number" name="education_budget" id="id_education_budget" 
+                  class="form-control" 
+                  value="{{ form.education_budget.value|default:budget.education_budget }}">
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="id_medical_budget">Medical Budget</label>
+                <input type="number" name="medical_budget" id="id_medical_budget" 
+                  class="form-control" 
+                  value="{{ form.medical_budget.value|default:budget.medical_budget }}">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="id_food_budget">Food Budget</label>
+                <input type="number" name="food_budget" id="id_food_budget" 
+                  class="form-control" 
+                  value="{{ form.food_budget.value|default:budget.food_budget }}">
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="id_entertainment_budget">Entertainment Budget</label>
+                <input type="number" name="entertainment_budget" id="id_entertainment_budget" 
+                  class="form-control" 
+                  value="{{ form.entertainment_budget.value|default:budget.entertainment_budget }}">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="id_transport_budget">Transport Budget</label>
+                <input type="number" name="transport_budget" id="id_transport_budget" 
+                  class="form-control" 
+                  value="{{ form.transport_budget.value|default:budget.transport_budget }}">
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="id_personal_care_budget">Personal Care Budget</label>
+                <input type="number" name="personal_care_budget" id="id_personal_care_budget" 
+                  class="form-control" 
+                  value="{{ form.personal_care_budget.value|default:budget.personal_care_budget }}">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="id_housing_bills_budget">Housing/Bills Budget</label>
+              <input type="number" name="housing_bills_budget" id="id_housing_bills_budget" 
+                class="form-control" 
+                value="{{ form.housing_bills_budget.value|default:budget.housing_bills_budget }}">
+            </div>
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .card {
+    border: none;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-control {
+    border-radius: 5px;
+    padding: 0.75rem;
+  }
+
+  .btn-primary {
+    font-size: 1rem;
+    padding: 0.75rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+
+  label {
+    font-weight: 600;
+    color: #555;
+  }
+
+  h3 {
+    margin-top: 2rem;
+    font-weight: 600;
+    color: #444;
+  }
+</style>
+{% endblock content %}

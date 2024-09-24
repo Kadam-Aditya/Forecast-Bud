@@ -1,0 +1,10 @@
+*.log
+*.pyc
+*.class
+*.o
+/build/
+/dist/
+venv/
+node_modules/
+.DS_Store
+Thumbs.db

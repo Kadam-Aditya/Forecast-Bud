@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'Budget Planner' %}">Budget Planner</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'budget' %}">Manual Budget</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        My Budget
+      </li>
+    </ol>
+  </nav>
+
+  <div class="dashboard-header">
+    <h2>{{ budget_title }}</h2>
+  </div>
+
+  {% if error_message %}
+    <div class="alert alert-danger mt-3" role="alert">
+      {{ error_message }}
+    </div>
+  {% endif %}
+
+  {% if total_expenses is not None %}
+  <div class="dashboard-grid">
+    <!-- Total Expenses Card -->
+    <div class="dashboard-card">
+      <h4>Total Expenses from {{ start_date }} to {{ end_date }}:</h4>
+      <p class="font-weight-bold text-success">{{ total_expenses }}</p>
+    </div>
+
+    <!-- Budget Remaining Card -->
+    <div class="dashboard-card">
+      <h4>Budget Remaining:</h4>
+      <p class="font-weight-bold text-info">{{ budget_remaining }}</p>
+    </div>
+
+    <!-- Total Budget Card -->
+    <div class="dashboard-card">
+      <h4>Total Budget:</h4>
+      <p class="font-weight-bold text-primary">{{ total_budget }}</p>
+    </div>
+
+    <!-- Expense Breakdown by Category Card -->
+    <div class="dashboard-card">
+      <h4>Expense Breakdown by Category:</h4>
+      <ul id="expenseList" class="list-group">
+        {% for category, expenses in expenses_by_category.items %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ category }}
+          <span class="badge badge-primary badge-pill">{{ expenses }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="budget-items">
+        <div class="budget-item">
+          <h4>Allotted Budget for Education:</h4>
+          <p class="font-weight-bold text-info">{{ education_budget }}</p>
+        </div>
+        
+        <div class="budget-item">
+          <h4>Allotted Budget for Medical:</h4>
+          <p class="font-weight-bold text-primary">{{ medical_budget }}</p>
+        </div>
+        
+        <div class="budget-item">
+          <h4>Allotted Budget for Food:</h4>
+          <p class="font-weight-bold text-primary">{{ food_budget }}</p>
+        </div>
+        
+        <div class="budget-item">
+          <h4>Allotted Budget for Entertainment:</h4>
+          <p class="font-weight-bold text-primary">{{ entertainment_budget }}</p>
+        </div>
+      
+        <div class="budget-item">
+          <h4>Allotted Budget for Transport:</h4>
+          <p class="font-weight-bold text-primary">{{ transport_budget }}</p>
+        </div>
+      
+        <div class="budget-item">
+          <h4>Allotted Budget for Personal Care:</h4>
+          <p class="font-weight-bold text-primary">{{ personal_care_budget }}</p>
+        </div>
+      
+        <div class="budget-item">
+          <h4>Allotted Budget for Housing/Bills:</h4>
+          <p class="font-weight-bold text-primary">{{ housing_bills_budget }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <p>Fun Fact: Predict your future! With AI and machine learning, predicting future expenses and cash flow is becoming a reality. AI can help you stay ahead by forecasting how much you can spend or save based on current trends in your income and lifestyle.</p>
+      <p>Fun Fact: Stress less! AI-driven tools are helping people automate their savings. By tracking your spending patterns, machine learning can set aside small amounts of money without you even noticing, making saving easier than ever before!</p>
+      <p>Did you know? AI-powered budgeting apps can analyze your spending habits and predict your future expenses! This means you can manage your finances smarter by getting AI-generated forecasts and personalized saving tips.</p>
+    </div>
+
+    <!-- Expense Chart Card -->
+    
+      
+  </div>
+  {% endif %}
+  <canvas id="expenseChart" width="700" height="400"></canvas>
+</div>
+
+<!-- CSS Grid Layout for Dashboard -->
+<style>
+  .dashboard-container {
+    padding: 20px;
+  }
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 20px;
+  }
+
+  .dashboard-card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .chart-card {
+    grid-column: span 2; /* Make chart card span two columns */
+  }
+
+  .dashboard-card h4 {
+    margin-bottom: 10px;
+  }
+
+  .font-weight-bold {
+    font-size: 1.25rem;
+  }
+
+  .budget-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between each item */
+  }
+
+  .budget-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+
+  .budget-item h4 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .budget-item p {
+    margin: 0;
+  }
+
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart.js and SweetAlert2 Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('expenseChart').getContext('2d');
+
+    var categories = Object.keys({{ expenses_by_category|safe }});
+    var expenses = Object.values({{ expenses_by_category|safe }});
+    var totalBudget = {{ total_budget|default:0 }};
+    var categoryBudgets = {
+      'Education': {{ education_budget|default:0 }},
+      'Medical': {{ medical_budget|default:0 }},
+      'Food': {{ food_budget|default:0 }},
+      'Entertainment': {{ entertainment_budget|default:0 }},
+      'Transport': {{ transport_budget|default:0 }},
+      'Personal Care': {{ personal_care_budget|default:0 }},
+      'Housing/Bills': {{ housing_bills_budget|default:0 }},
+    };
+
+    var chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: categories,
+        datasets: [{
+          label: 'Expenses by Category',
+          data: expenses,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Check if expenses for each category exceed allotted budget
+    for (var i = 0; i < categories.length; i++) {
+      var category = categories[i];
+      var categoryExpense = expenses[i];
+      var categoryBudget = categoryBudgets[category];
+
+      if (categoryExpense > categoryBudget) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Budget Exceeded',
+          text: 'Expenses for ' + category + ' have exceeded the allotted budget!',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false
+        });
+      }
+    }
+
+    // Check if total expenses exceed total budget
+    var totalExpenses = {{ total_expenses|default:0 }};
+    if (totalExpenses > totalBudget) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Budget Exceeded',
+        text: 'Total expenses have exceeded the total budget!',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false
+      });
+    }
+  });
+</script>
+{% endblock content %}

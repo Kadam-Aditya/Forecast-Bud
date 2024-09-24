@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'Budget Planner'%}">Budget Planner</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'ai_budget'%}">Forecast Budget</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Forecasted Monthly Budget
+      </li>
+    </ol>
+  </nav>
+
+  <div class="action-header">
+    <h2>Forecast-Bud</h2>
+  </div>
+
+  {% if error_message %}
+    <div class="alert alert-danger mt-3" role="alert">
+      {{ error_message }}
+    </div>
+  {% endif %}
+
+  {% if total_expenses is not None %}
+  <div class="budget-section">
+    <div class="budget-card">
+      <h4>Total Expenses from {{ start_date }} to {{ end_date }}</h4>
+      <p class="total-budget font-weight-bold text-success">{{ total_expenses }}</p>
+    </div>
+
+    <div class="budget-card">
+      <h4>Budget Remaining</h4>
+      <p class="total-budget font-weight-bold text-info">{{ budget_remaining }}</p>
+    </div>
+
+    <div class="budget-card">
+      <h4>Total Budget</h4>
+      <p class="total-budget font-weight-bold text-primary">{{ total_monthly_budget }}</p>
+    </div>
+
+    <div class="budget-card">
+      <h4>Expense Breakdown by Category:</h4>
+      <ul id="expenseList" class="expense-list">
+        {% for category, expenses in expenses_by_category.items %}
+          <li class="expense-item">
+            {{ category }}
+            <span class="badge">{{ expenses }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="budget-card">
+      <h4>Allotted Budgets:</h4>
+      <div class="category-cards">
+        <div class="category-card">
+          <div class="category-icon education-icon"></div>
+          <div class="category-info">
+            <span class="category-name">Education</span>
+            <span class="category-amount text-info">{{ education_budget }}</span>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-icon medical-icon"></div>
+          <div class="category-info">
+            <span class="category-name">Medical</span>
+            <span class="category-amount text-primary">{{ medical_budget }}</span>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-icon food-icon"></div>
+          <div class="category-info">
+            <span class="category-name">Food</span>
+            <span class="category-amount text-primary">{{ food_budget }}</span>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-icon entertainment-icon"></div>
+          <div class="category-info">
+            <span class="category-name">Entertainment</span>
+            <span class="category-amount text-primary">{{ entertainment_budget }}</span>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-icon transport-icon"></div>
+          <div class="category-info">
+            <span class="category-name">Transport</span>
+            <span class="category-amount text-primary">{{ transport_budget }}</span>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-icon personal-care-icon"></div>
+          <div class="category-info">
+            <span class="category-name">Personal Care</span>
+            <span class="category-amount text-primary">{{ personal_care_budget }}</span>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-icon housing-bills-icon"></div>
+          <div class="category-info">
+            <span class="category-name">Housing/Bills</span>
+            <span class="category-amount text-primary">{{ housing_bills_budget }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="budget-card">
+      <h4>Forecasted Personalized Budget for this Week, Forecast-Bud</h4>
+      <p>Fun Fact: Predict your future! With AI and machine learning, predicting future expenses and cash flow is becoming a reality. AI can help you stay ahead by forecasting how much you can spend or save based on current trends in your income and lifestyle.</p>
+      <p>Fun Fact: Stress less! AI-driven tools are helping people automate their savings. By tracking your spending patterns, machine learning can set aside small amounts of money without you even noticing, making saving easier than ever before!</p>
+      <p>Did you know? AI-powered budgeting apps can analyze your spending habits and predict your future expenses! This means you can manage your finances smarter by getting AI-generated forecasts and personalized saving tips.</p>
+    </div>
+
+    <!-- Chart.js Canvas -->
+    <div class="chart-container">
+      <h4>Expense Chart:</h4>
+      <canvas id="expenseChart" width="400" height="200"></canvas>
+    </div>
+
+  </div>
+  {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('expenseChart').getContext('2d');
+
+    var categories = Object.keys({{ expenses_by_category|safe }});
+    var expenses = Object.values({{ expenses_by_category|safe }});
+    var totalBudget = {{ total_monthly_budget|default:0 }};
+    
+    var categoryBudgets = {
+      'Education': {{ education_budget|default:0 }},
+      'Medical': {{ medical_budget|default:0 }},
+      'Food': {{ food_budget|default:0 }},
+      'Entertainment': {{ entertainment_budget|default:0 }},
+      'Transport': {{ transport_budget|default:0 }},
+      'Personal Care': {{ personal_care_budget|default:0 }},
+      'Housing/Bills': {{ housing_bills_budget|default:0 }},
+    };
+
+    var chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: categories,
+        datasets: [{
+          label: 'Expenses by Category',
+          data: expenses,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Budget exceeded alert for each category
+    for (var i = 0; i < categories.length; i++) {
+      var category = categories[i];
+      var categoryExpense = expenses[i];
+      var categoryBudget = categoryBudgets[category];
+      if (categoryExpense > categoryBudget) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Budget Exceeded',
+          text: 'Expenses for ' + category + ' have exceeded the allotted budget!',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false
+        });
+      }
+    }
+
+    // Total budget exceeded alert
+    var totalExpenses = {{ total_expenses|default:0 }};
+    if (totalExpenses > totalBudget) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Budget Exceeded',
+        text: 'Total expenses have exceeded the total budget!',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false
+      });
+    }
+  });
+</script>
+
+<style>
+  .total-budget {
+    font-size: 1.5rem; /* Increased the font size */
+    color: #ff5733; /* Changed the color to a custom orange */
+    font-weight: bold;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .action-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .budget-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 20px;
+  }
+
+  .budget-card {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+
+  .chart-container {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .expense-list {
+    list-style-type: none;
+    padding: 10px;
+    padding-bottom: 0;
+  }
+
+  .expense-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 15px;
+    background-color: white;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+
+  .category-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 15px;
+    padding-top: 10px;
+  }
+
+  .category-card {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .category-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .category-name {
+    font-weight: 500;
+  }
+
+  .category-amount {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+
+</style>
+
+{% endblock content %}

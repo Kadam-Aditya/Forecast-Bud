@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'Budget Planner'%}">Budget Planner</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'budget'%}">Manual budget</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Saved Budgets
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h1 class="mb-4 text-center">Saved Budgets</h1>
+
+      <!-- Display saved budgets as Bootstrap cards -->
+      <div class="row">
+        {% for budget in saved_budgets %}
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100 rounded-card">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-primary">{{ budget.budget_title }}</h5>
+              <p class="card-text">
+                <strong>Start Date:</strong> {{ budget.start_date }} <br>
+                <strong>End Date:</strong> {{ budget.end_date }} <br>
+                <strong>Total Budget:</strong> Rs.{{ budget.total_budget }}
+              </p>
+              
+              <div class="mt-auto">
+                <!-- Generate Report Button -->
+                <form method="post" action="{% url 'Saved Budgets1' %}" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="budget_id" value="{{ budget.id }}">
+                  <input type="hidden" name="start_date" value="{{ budget.start_date }}">
+                  <input type="hidden" name="end_date" value="{{ budget.end_date }}">
+                  <input type="hidden" name="total_budget" value="{{ budget.total_budget }}">
+                  <input type="hidden" name="budget_title" value="{{ budget.budget_title }}">
+                  <button type="submit" class="btn btn-primary btn-sm mb-2 modern-btn">Load Report</button>
+                </form>
+
+                <!-- Edit Button -->
+                <a href="{% url 'edit_budget' budget.id %}" class="btn btn-warning btn-sm mb-2 modern-btn">Edit</a>
+
+                <!-- Delete Button -->
+                <form method="post" action="{% url 'delete_budget' budget.id %}" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger btn-sm mb-2 modern-btn">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    background-color: #f3f4f6;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  /* Modern card styling */
+  .card {
+    border: none;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  }
+
+  .card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+  }
+
+  /* Modern button styling */
+  .modern-btn {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px; /* Rounded button corners */
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .modern-btn:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Button shadow on hover */
+  }
+
+  .btn-primary {
+    background: #007bff;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background: #0056b3;
+  }
+
+  .btn-warning {
+    background: #007bff;
+    border: none;
+  }
+
+  .btn-warning:hover {
+    background: #0056b3;
+  }
+
+  .btn-danger {
+    background: rgb(2, 11, 69);
+    border: none;
+  }
+
+  .btn-danger:hover {
+    background: #b52b35;
+  }
+
+  /* Card title */
+  .card-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  /* Card text */
+  .card-text {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  /* Button spacing */
+  .mt-auto {
+    margin-top: auto;
+  }
+
+  .rounded-card {
+    border-radius: 12px; /* Adds rounded corners to the card */
+  }
+</style>
+{% endblock content %}

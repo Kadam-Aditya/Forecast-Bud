@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* Custom Styles for AI Monthly Budget Page */
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumb {
+    background-color: #f8f9fa;
+    padding: 8px 15px;
+    border-radius: 5px;
+  }
+
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+
+  .card-header {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1.25rem;
+    padding: 10px 20px;
+  }
+
+  .card-body {
+    padding: 20px;
+    background-color: #fdfdfd;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+    margin-top: 1rem;
+  }
+
+  .prediction-item {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .prediction-key {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .prediction-value {
+    color: #555;
+  }
+
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+
+  .text-danger {
+    font-weight: bold;
+    color: #e74c3c;
+  }
+
+  .mt-4 {
+    margin-top: 1.5rem;
+  }
+
+  .mt-3 {
+    margin-top: 1rem;
+  }
+
+  .shadow-sm {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .rounded {
+    border-radius: 0.25rem;
+  }
+
+  .bg-primary {
+    background-color: #007bff;
+  }
+
+  .text-white {
+    color: #fff;
+  }
+</style>
+
+<div class="container mt-4">
+  <!-- Breadcrumb -->
+  <div class="row">
+    <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light rounded p-2">
+          <li class="breadcrumb-item">
+            <a href="{% url 'Budget Planner'%}">Budget Planner</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'ai_budget'%}">Forecast Budget</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Predictions
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Predictions Section -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h2 class="section-title">Predictions</h2>
+      
+      <!-- Loop through categories and predictions -->
+      {% for category, prediction_info in predictions.items %}
+        <div class="card mt-4 shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">{{ category }}</h3>
+          </div>
+          <div class="card-body">
+            {% if 'error' in prediction_info %}
+              <p class="text-danger">Error: {{ prediction_info.error }}</p>
+            {% else %}
+              <p><strong>Forecast for the next seven weeks:</strong></p>
+              <ul class="list-unstyled">
+                {% for key, value in prediction_info.predicted_values.items %}
+                  <li class="prediction-item">
+                    <span class="prediction-key">{{ key }}:</span> 
+                    <span class="prediction-value">{{ value }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+              
+              <!-- Display plot image if available -->
+              {% if prediction_info.plot_image %}
+                <img src="data:image/png;base64,{{ prediction_info.plot_image }}" alt="{{ category }} Plot" class="img-fluid mt-3 rounded shadow-sm">
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

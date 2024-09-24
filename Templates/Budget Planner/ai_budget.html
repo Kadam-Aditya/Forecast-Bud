@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+/* Custom container and grid system */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+h1{
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.breadcrumb-container {
+  width: 83.33%; /* Equivalent to col-md-10 */
+}
+
+.button-back-container {
+  width: 16.67%; /* Equivalent to col-md-2 */
+}
+
+.form-container {
+  width: 50%; /* Equivalent to col-md-6 */
+  margin-top: 20px;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+/* Button styling */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+button,
+a.btn {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+button:hover,
+a.btn:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+p {
+  margin-top: 20px;
+}
+
+.btn-analyze {
+  margin-top: 45px;
+  margin-left: 280px; /* Add more space above Analyze Expenses button */
+}
+
+.btn-weekly {
+  margin-top: 50px;
+}
+
+.btn-monthly{
+  display: flex;
+  justify-content: center;
+  margin-left: 600px;
+  margin-top: -55px;
+  text-align: center;
+}
+
+.btn-current-weekly{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+}
+
+.btn-current-monthly{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 600px;
+  margin-bottom: 50px;
+  margin-top: -55px;
+}
+
+p {
+  margin-top: 20px;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: -16px;
+  padding: 15px;; /* Add padding around the note text */
+  background-color: #f8f9fa; /* Optional: Light background to make the note stand out */
+  border-radius: 5px; /* Optional: Slightly rounded corners */
+  color: rgb(171, 169, 169);
+}
+
+</style>
+
+<div class="container mt-4">
+  <div class="row text-center">
+    <div class="breadcrumb-container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'Budget Planner' %}">Budget Planner</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Forecast  budget
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+  </div>
+
+  {% if error_message %}
+  <div class="alert alert-danger fade show mt-3" role="alert" style="text-align: center;">
+    {{ error_message }}
+  </div>
+  {% endif %}
+
+  <h1>Forecast budget using Machine learning</h1>
+
+  <p>
+    Note: You can generate weekly budget plan as well as monthly budget plan for you but first you need to atleast 
+    add 1 expence per category. It will generate personalized total budget as well as categorical budget.
+    The accuracy of the model will increase with the number of expences you add.
+  </p>
+
+  <div class="form-container">
+    <form method="post" action="{% url 'ai_budget_result' %}">
+      {% csrf_token %}
+       <!-- Added custom class -->
+      <button type="submit" name="ai_weekly_result" class="btn btn-weekly">Generate Weekly Budget</button> <!-- Added custom class -->
+      <button type="submit" name="ai_monthly_result" class="btn btn-monthly">Generate Monthly Budget</button> 
+      <a href="{% url 'saved_ai_weekly_result' %}" class="btn btn-primary btn-current-weekly">Current Weekly Budget</a> <!-- Added custom class -->
+      <a href="{% url 'saved_ai_monthly_result' %}" class="btn btn-primary btn-current-monthly">Current Monthly Budget</a> 
+      <button type="submit" name="ai_budget_result" class="btn btn-analyze">Analyze Expenses</button>
+    </form>
+    
+
+    
+  </div>
+</div>
+{% endblock content %}

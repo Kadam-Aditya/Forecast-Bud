@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .container {
+    margin-top: 2rem;
+  }
+
+  .breadcrumb {
+    margin-bottom: 1rem;
+    width:1030px;
+  }
+
+  .btn-primary {
+    margin-left: 100px;
+  }
+
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #f8f9fa; /* Light background for contrast */
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #myChart {
+    max-width: 100%; /* Ensure the chart fits within its container */
+  }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px; /* Space between legend and chart */
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Income Summary</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Summary
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="col-md-2">
+      <a href="" class="btn btn-primary">BACK</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="chart-container">
+        <canvas id="myChart" width="500" height="380"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/incomestats.js' %}"></script>
+{% endblock content %}

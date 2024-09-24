@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+/* Custom grid CSS */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.breadcrumb-container {
+  width: 83.33%; /* Equivalent to col-md-10 */
+}
+
+.header-container {
+  width: 100%;
+  margin-top: 100px;
+}
+
+.header-container h1 {
+  font-weight: bold;
+  font-size: 43;
+  margin-top: -30px;
+}
+
+/* Styling for the budget buttons */
+.budget-option-container1, .budget-option-container2 {
+  width: 40%;
+  margin-top: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+/* Button customization */
+.btn-primary {
+  background-color: #3498db; /* Blue background */
+  border: none;
+  color: white;
+  padding: 15px 30px; /* Increase padding for larger button size */
+  font-size: 18px; /* Larger font size */
+  font-weight: bold;
+  border-radius: 10px; /* Rounded corners */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn-primary:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Add shadow for more depth */
+.btn-primary {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
+}
+
+.light-grey-text {
+  color: #a0a0a0; /* Light grey color */
+  font-size: 14px;
+  margin-top: 30px;
+}
+</style>
+
+<div class="container mt-4">
+  <div class="row text-center">
+    <div class="breadcrumb-container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Budget Planner</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            My Budget
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="header-container">
+      <h1 class="mb-4">Select the type of budget</h1>
+    </div>
+
+    <div class="budget-option-container1">
+      <a href="{% url 'ai_budget' %}" class="btn btn-primary btn-block">Forecast Budget</a>
+      <p class="light-grey-text">(A well trained ARIMA model will automatically generate a personalized budget plan based on your previous expenses. It leverages time-series patterns to accurately forcast future budget.)</p>
+    </div>
+    
+    <div class="budget-option-container2">
+      <a href="{% url 'budget' %}" class="btn btn-primary btn-block">Manual Budget</a>
+      <p class="light-grey-text">(You will need to manually add the total monthly budget that you want and the time frame you want for your budget. Also you can add specific budget for each category you want.)</p>
+    </div>
+  </div>
+</div>
+{% endblock content %}
