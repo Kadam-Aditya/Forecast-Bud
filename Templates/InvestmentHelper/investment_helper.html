@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="analysis-container">
+
+  <h2 class="title">Market Analysis Dashboard</h2>
+
+  <!-- TOP LINE CHART -->
+  <div class="card large-chart">
+    <h5>Index Trend (Last 7 Days)</h5>
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+
+    <!-- BAR CHART -->
+    <div class="card">
+      <h5>Stock Performance</h5>
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- DOUGHNUT -->
+    <div class="card">
+      <h5>Portfolio Distribution</h5>
+      <canvas id="pieChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- MINI MARKET CARDS -->
+  <div class="market-row">
+
+    <div class="market-card">
+      <span>NIFTY 50</span>
+      <h4>22,150</h4>
+      <small class="positive">+0.85%</small>
+    </div>
+
+    <div class="market-card">
+      <span>SENSEX</span>
+      <h4>73,420</h4>
+      <small class="positive">+0.72%</small>
+    </div>
+
+    <div class="market-card">
+      <span>RELIANCE</span>
+      <h4>₹2,950</h4>
+      <small class="negative">-0.40%</small>
+    </div>
+
+    <div class="market-card">
+      <span>TCS</span>
+      <h4>₹3,850</h4>
+      <small class="positive">+1.10%</small>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // LINE CHART
+  new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [{
+        label: 'NIFTY 50',
+        data: [22000,22150,21980,22200,22300,22100,22150],
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // BAR CHART
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Reliance','TCS','Infosys','HDFC'],
+      datasets: [{
+        label: 'Weekly Growth %',
+        data: [2.5,3.2,1.8,2.1]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // PIE CHART
+  new Chart(document.getElementById('pieChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Equity','Mutual Funds','Bonds','Cash'],
+      datasets: [{
+        data: [40,30,20,10]
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+});
+</script>
+
+<style>
+
+/* BACKGROUND */
+body {
+  background: #f4f6f9;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* CONTAINER */
+.analysis-container {
+  padding: 25px;
+}
+
+/* TITLE */
+.title {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+/* LARGE CHART */
+.large-chart {
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+/* MARKET ROW */
+.market-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.market-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.market-card span {
+  font-size: 13px;
+  color: #666;
+}
+
+.market-card h4 {
+  margin: 5px 0;
+}
+
+/* COLORS */
+.positive { color: green; }
+.negative { color: red; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .market-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+</style>
+
+{% endblock %}

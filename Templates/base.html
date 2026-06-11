@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Forecast-Bud {% block title %} {% endblock %}</title>
+    <title>ExpenseXpert {% block title %} {% endblock %}</title>
     <!-- Bootstrap core CSS -->
     <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet" />
     <link href="{% static 'css/main.css'%}" rel="stylesheet" />
@@ -14,18 +14,35 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet" />
+    <style>
+
+      /* 🔥 USERNAME BADGE */
+      .username-badge {
+        color: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        border: 1px solid white;
+        margin-right: 12px;
+        display: inline-block;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        transition: all 0.3s ease;
+      }
+
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#" style="font-size: 19px;font-family: Arial, sans-serif; font-weight: bold;">Forecast-Bud</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#" style="font-size: 19px;font-family: Arial, sans-serif; font-weight: bold;">ExpenseXpert</a>
 
       <ul
         class="navbar-nav px-3"
         style="display: flex; flex-direction: row; align-items: center;"
       >
-        <li class="nav-item text-nowrap">
-          <span class="nav-link" href="">
-            ({{request.user.username}})
+        <li class="nav-item">
+          <span class="username-badge">
+            {{ request.user.username }}
           </span>
         </li>
 

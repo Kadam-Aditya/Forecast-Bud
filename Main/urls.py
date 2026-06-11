@@ -10,5 +10,7 @@ urlpatterns = [
     path('income/', include('Income.urls')),
     path('Budget Planner/', include('BudgetPlanner.urls')),
     path('Finance News/', include('FinanceNews.urls')),
+    path('Investment Helper/', include('InvestmentHelper.urls')),
+    path('ai-chatbot/', include('AIChatbot.urls')),
     path('admin/', admin.site.urls),
 ]
