@@ -1,110 +1,166 @@
 {% load static %}
-<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+
+<style>
+/* =========================
+   SIDEBAR STYLING
+========================= */
+
+.sidebar {
+    background: #1f2937 !important;
+    min-height: calc(100vh - 56px);
+    border-right: 1px solid #374151;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+    padding-top: 15px;
+}
+
+.sidebar-sticky {
+    position: sticky;
+    top: 70px;
+}
+
+/* Section Headings */
+.sidebar-heading {
+    padding: 18px 20px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #9ca3af !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Links */
+.sidebar .nav-link {
+    color: #e5e7eb !important;
+    font-size: 17px;
+    font-family: Arial, sans-serif;
+    padding: 12px 18px;
+    margin: 4px 10px;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+}
+
+/* Hover */
+.sidebar .nav-link:hover {
+    background: #374151;
+    color: #ffffff !important;
+    transform: translateX(4px);
+}
+
+/* Active Link */
+.sidebar .nav-link.active {
+    background: #3b82f6;
+    color: white !important;
+    font-weight: 600;
+}
+
+/* Feather Icons */
+.sidebar .nav-link span {
+    margin-right: 8px;
+}
+
+/* Scrollbar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 10px;
+}
+</style>
+
+<nav class="col-md-2 d-none d-md-block sidebar">
   <div class="sidebar-sticky">
+
     <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link active" href="#">
           <span data-feather="home"></span>
-          Dashboard <span class="sr-only">(current)</span>
+          Dashboard
         </a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'expenses' %}" style="font-size: 17px; font-family: Arial, sans-serif;">
+        <a class="nav-link" href="{% url 'expenses' %}">
+          <span data-feather="credit-card"></span>
           Expenses
         </a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'income' %}" style="font-size: 17px;font-family: Arial, sans-serif;">
+        <a class="nav-link" href="{% url 'income' %}">
+          <span data-feather="dollar-sign"></span>
           Income
         </a>
       </li>
     </ul>
 
-    <h6
-      class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-    >
-      <span style="font-size: 14px;font-family: Arial, sans-serif;">Summary</span>
-      <a
-        class="d-flex align-items-center text-muted"
-        href="#"
-        aria-label="Add a new report"
-      >
-        <span data-feather="plus-circle"></span>
-      </a>
+    <h6 class="sidebar-heading">
+      Summary
     </h6>
+
     <ul class="nav flex-column mb-2">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'stats' %}" style="font-size: 17px;font-family: Arial, sans-serif;">
-          <span data-feather="file-text"></span>
+        <a class="nav-link" href="{% url 'stats' %}">
+          <span data-feather="bar-chart-2"></span>
           Expenses Summary
         </a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'incomestats' %}" style="font-size: 17px;font-family: Arial, sans-serif;">
-          <span data-feather="file-text"></span>
+        <a class="nav-link" href="{% url 'incomestats' %}">
+          <span data-feather="pie-chart"></span>
           Income Summary
         </a>
       </li>
     </ul>
 
-    <h6
-    class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-  >
-    <span style="font-size: 14px;font-family: Arial, sans-serif;">Advance</span>
-    <a
-      class="d-flex align-items-center text-muted"
-      href="#"
-      aria-label="Add a new report"
-    >
-      <span data-feather="plus-circle"></span>
-    </a>
-  </h6>
-  <ul class="nav flex-column mb-2">
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'Budget Planner' %}" style="font-size: 17px;font-family: Arial, sans-serif;">
-        <span data-feather="file-text"></span>
-        Budget Planner
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'Finance News' %}" style="font-size: 17px;font-family: Arial, sans-serif;">
-        <span data-feather="file-text"></span>
-        Finance News
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'investment_helper' %}" style="font-size: 17px;font-family: Arial, sans-serif;">
-        <span data-feather="file-text"></span>
-        Investment Helper
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'ai_chatbot' %}" style="font-size: 17px;font-family: Arial, sans-serif;">
-        <span data-feather="file-text"></span>
-        AI Chatbot
-      </a>
-    </li>
-  </ul>
-
-    <h6
-      class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-    >
-      <span style="font-size: 14px;font-family: Arial, sans-serif;">Settings</span>
-      <a
-        class="d-flex align-items-center text-muted"
-        href="#"
-        aria-label="Add a new report"
-      >
-        <span data-feather="plus-circle"></span>
-      </a>
+    <h6 class="sidebar-heading">
+      Advance
     </h6>
+
     <ul class="nav flex-column mb-2">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'preferences'%}" style="font-size: 17px;font-family: Arial, sans-serif;">
-          <span data-feather="file-text"></span>
+        <a class="nav-link" href="{% url 'Budget Planner' %}">
+          <span data-feather="target"></span>
+          Budget Planner
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'Finance News' %}">
+          <span data-feather="book-open"></span>
+          Finance News
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'investment_helper' %}">
+          <span data-feather="trending-up"></span>
+          Investment Helper
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'ai_chatbot' %}">
+          <span data-feather="message-circle"></span>
+          AI Chatbot
+        </a>
+      </li>
+    </ul>
+
+    <h6 class="sidebar-heading">
+      Settings
+    </h6>
+
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'preferences' %}">
+          <span data-feather="settings"></span>
           Account
         </a>
       </li>
     </ul>
+
   </div>
 </nav>
